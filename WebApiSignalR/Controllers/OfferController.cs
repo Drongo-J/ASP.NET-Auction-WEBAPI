@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using WebApiSignalR.Hubs;
+using WebApiSignalR.Models;
 
 namespace WebApiSignalR.Controllers
 {
@@ -14,13 +15,13 @@ namespace WebApiSignalR.Controllers
         public OfferController(IHubContext<MessageHub> messageHub)
         {
             this.messageHub = messageHub;
-            if (!System.IO.File.Exists("mercedes.txt"))
+            if (!System.IO.File.Exists("RoomsFiles/mercedes.txt"))
             {
-                FileHelper.Write("mercedes",5000);
+                FileHelper.Write("mercedes", 5000);
             }
-            if (!System.IO.File.Exists("chevrolet.txt"))
+            if (!System.IO.File.Exists("RoomsFiles/chevrolet.txt"))
             {
-                FileHelper.Write("chevrolet",1300);
+                FileHelper.Write("chevrolet", 1300);
             }
         }
 
@@ -53,11 +54,17 @@ namespace WebApiSignalR.Controllers
         }
 
         [HttpGet("/IncreaseRoom")]
-        public double Get(string room,double number)
+        public double Get(string room, double number)
         {
             var data = FileHelper.Read(room) + number;
-            FileHelper.Write(room,data);
+            FileHelper.Write(room, data);
             return data;
+        }
+
+        [HttpGet("/GetNumberOfUsers")]
+        public int GetNumberOfUsers(string room)
+        {
+            return ConnectedUsers.GroupUserCounts.ContainsKey(room) ? ConnectedUsers.GroupUserCounts[room] : 0; ;
         }
     }
 }

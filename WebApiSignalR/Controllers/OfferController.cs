@@ -35,7 +35,14 @@ namespace WebApiSignalR.Controllers
         public double GetRoom(string room)
         {
             //messageHub.Clients.All.SendOffersToUser(data);
-            return FileHelper.Read(room);
+            var value = FileHelper.Read(room);
+            return value;
+        }
+
+        [HttpGet("/GetRooms")]
+        public IActionResult GetRooms()
+        {
+            return Ok(FileHelper.GetRooms());
         }
 
         [HttpGet("/Increase")]
@@ -44,11 +51,13 @@ namespace WebApiSignalR.Controllers
             var data = FileHelper.Read() + number;
             FileHelper.Write(data);
         }
+
         [HttpGet("/IncreaseRoom")]
-        public async void Get(string room,double number)
+        public double Get(string room,double number)
         {
             var data = FileHelper.Read(room) + number;
             FileHelper.Write(room,data);
+            return data;
         }
     }
 }

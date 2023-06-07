@@ -1,9 +1,10 @@
 using WebApiSignalR.Hubs;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+    
 builder.Services.AddSignalR();
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
@@ -25,7 +26,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors(x => x
                     .AllowAnyMethod()
                     .AllowAnyHeader()
